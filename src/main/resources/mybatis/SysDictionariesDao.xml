@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiwen.service.mapper.SysDictionariesDao" >
+<resultMap id="BaseResultMap" type="com.yiwen.service.model.SysDictionaries" >
+<id column="id" property="id" jdbcType="INTEGER" />
+<id column="table_name" property="tableName" jdbcType="VARCHAR" />
+<id column="field_name" property="fieldName" jdbcType="VARCHAR" />
+<id column="key" property="key" jdbcType="INTEGER" />
+<id column="value" property="value" jdbcType="VARCHAR" />
+<id column="sequence" property="sequence" jdbcType="INTEGER" />
+<id column="remark" property="remark" jdbcType="VARCHAR" />
+<id column="created_user" property="createdUser" jdbcType="INTEGER" />
+<id column="update_user" property="updateUser" jdbcType="INTEGER" />
+<id column="deleted_at" property="deletedAt" jdbcType="TIMESTAMP" />
+<id column="deleted_user" property="deletedUser" jdbcType="INTEGER" />
+<id column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+<id column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+</resultMap>
+<sql id="Base_Column_List" >
+    id,table_name,field_name,`key`,`value`,sequence,remark,created_user,update_user,deleted_at,deleted_user,created_at,updated_at
+</sql>
+
+<select id="get" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+     <include refid="Base_Column_List" />
+    FROM sys_dictionaries
+    where ID = #{id,jdbcType=VARCHAR}
+</select>
+
+<select id="findList"  resultMap="BaseResultMap">
+	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		sys_dictionaries d where 1=1 
+	<if test="tableName!=null and tableName!=''">
+		and d.table_name = #{tableName}
+	</if>
+	<if test="fieldName!=null and fieldName!=''">
+		and d.field_name = #{fieldName}
+	</if>
+	<if test="key!=null and key!=''">
+		and d.key = #{key}
+	</if>
+	ORDER BY d.sequence
+</select>
+
+</mapper>
+

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiwen.service.mapper.SysDicTablesDao" >
+<resultMap id="BaseResultMap" type="com.yiwen.service.model.SysDicTables" >
+<id column="id" property="id" jdbcType="INTEGER" />
+<id column="name" property="name" jdbcType="VARCHAR" />
+<id column="value" property="value" jdbcType="VARCHAR" />
+<id column="remark" property="remark" jdbcType="VARCHAR" />
+<id column="created_user" property="createdUser" jdbcType="INTEGER" />
+<id column="update_user" property="updateUser" jdbcType="INTEGER" />
+<id column="deleted_at" property="deletedAt" jdbcType="TIMESTAMP" />
+<id column="deleted_user" property="deletedUser" jdbcType="INTEGER" />
+<id column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+<id column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+</resultMap>
+<sql id="Base_Column_List" >
+    id,`name`,`value`,remark,created_user,update_user,deleted_at,deleted_user,created_at,updated_at
+</sql>
+
+<select id="get"  resultMap="BaseResultMap">
+	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		sys_dic_tables d
+	WHERE
+		d.id = #{id}
+</select>
+<select id="findList"  resultMap="BaseResultMap">
+	SELECT
+		<include refid="Base_Column_List" />
+	FROM
+		sys_dic_fields d where 1=1 
+	<if test="name!=null and name!=''">
+		and d.name = #{name}
+	</if>
+	<if test="value!=null and value!=''">
+		and d.value = #{value}
+	</if>
+	ORDER BY d.id
+</select>
+
+
+</mapper>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	 xmlns:tx="http://www.springframework.org/schema/tx" 
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+     xmlns:context="http://www.springframework.org/schema/context"  
+     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+     http://www.springframework.org/schema/tx   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd   
+     http://www.springframework.org/schema/context  http://www.springframework.org/schema/context/spring-context-4.0.xsd" > 
+    <!-- 注解包 -->
+    <context:component-scan base-package="com.yiwen"/>
+    
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:jdbc.properties" />
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">  
+		<property name="driverClass" value="${jdbc.driver}"/>  
+		<property name="jdbcUrl" value="${jdbc.url}"/>  
+		<property name="user" value="${jdbc.username}"/>  
+		<property name="password" value="${jdbc.password}"/> 
+		<property name="minPoolSize" value="${minPoolSize}"/>
+		<property name="maxPoolSize" value="${maxPoolSize}"/>
+		<property name="maxIdleTime" value="${maxIdleTime}"/>
+		<property name="acquireIncrement" value="${acquireIncrement}"/>
+	</bean>  
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+	    <property name="dataSource" ref="dataSource" />
+	    <property name="mapperLocations" value="classpath:mybatis/*.xml"></property>
+	</bean> 
+	<!-- 事务管理器 --> 
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- 事务注解驱动，标注@Transactional的类和方法将具有事务性 -->  
+	<tx:annotation-driven transaction-manager="txManager" />
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+	   <property name="basePackage" value="com.yiwen.service.mapper" /> 
+	</bean>
+</beans>
+
+
